@@ -508,6 +508,12 @@ metrics:
 
   # podLabels: {}
 
+  # nodeSelector: {}
+
+  # tolerations: []
+
+  # affinity: {}
+
   service:
     type: ClusterIP
     ## Use serviceLoadBalancerIP to request a specific static IP,
