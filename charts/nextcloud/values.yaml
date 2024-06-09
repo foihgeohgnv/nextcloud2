@@ -375,11 +375,16 @@ externalDatabase:
   ## Use a existing secret
   existingSecret:
     enabled: false
-    # secretName: nameofsecret
+    # -- e.g. nameofsecret
+    secretName:
     usernameKey: db-username
     passwordKey: db-password
-    # hostKey: db-hostname-or-ip
-    # databaseKey: db-name
+    # -- e.g. db-hostname-or-ip
+    hostKey:
+    # -- e.g. db-name
+    databaseKey:
+    # -- complete URL with type, username and password (current only for notify_push used)
+    databaseURLKey: db-url
 
 ##
 ## MariaDB chart configuration
@@ -593,12 +598,47 @@ tolerations: []
 
 affinity: {}
 
-dnsConfig: {}
-# Custom dns config for Nextcloud containers.
-# You can for example configure ndots. This may be needed in some clusters with alpine images.
-# options:
-#   - name: ndots
-#     value: "1"
+dnsConfig:
+  # -- Custom dns config for Nextcloud containers.
+  # You can for example configure ndots. This may be needed in some clusters with alpine images.
+  # options:
+  #   - name: ndots
+  #     value: "1"
+  options: []
+
+
+# Notify Push (Clientpush)
+notifyPush:
+  # -- enable another deployment to handle notify_push (sometimes called ClientPush)
+  enabled: false
+
+  replicaCount: 1
+
+  image:
+    registry: docker.io
+    # -- image of notify_push (there is no official image yet: https://github.com/nextcloud/notify_push/issues/106)
+    repository: miles170/notify_push
+    tag: v0.7.0
+    pullPolicy: IfNotPresent
+    pullSecrets:
+    #   - myRegistrKeySecretName
+
+  resources: {}
+
+  podAnnotations: {}
+  podLabels: {}
+
+  service:
+    type: ClusterIP
+    # -- Use serviceLoadBalancerIP to request a specific static IP, otherwise leave blank
+    loadBalancerIP:
+    annotations: {}
+    labels: {}
+
+  ingress:
+    # -- patch default ingress to forward following path to notify_push service
+    path: /push
+    pathType: Prefix
 
 ## Prometheus Exporter / Metrics
 ##
@@ -650,6 +690,7 @@ metrics:
       prometheus.io/port: "9205"
     labels: {}
 
+<<<<<<< HEAD
   # security context for the metrics CONTAINER in the pod
   securityContext:
     runAsUser: 1000
@@ -665,8 +706,12 @@ metrics:
   # seccompProfile:
   #   type: RuntimeDefault
 
+=======
+#
+prometheus:
+>>>>>>> 6ed673a (feat(nextcloud): add notify_push support)
   ## Prometheus Operator ServiceMonitor configuration
-  ##
+  ## collects data from nextcloud metrics and notify_push if enabled
   serviceMonitor:
     ## @param metrics.serviceMonitor.enabled Create ServiceMonitor Resource for scraping metrics using PrometheusOperator
     ##
