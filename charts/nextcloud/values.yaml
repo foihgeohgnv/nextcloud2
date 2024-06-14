@@ -611,6 +611,7 @@ dnsConfig:
 notifyPush:
   # -- enable another deployment to handle notify_push (sometimes called ClientPush)
   enabled: false
+  autoSetup: false
 
   replicaCount: 1
 
