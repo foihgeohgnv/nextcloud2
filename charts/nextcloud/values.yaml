@@ -691,7 +691,6 @@ metrics:
       prometheus.io/port: "9205"
     labels: {}
 
-<<<<<<< HEAD
   # security context for the metrics CONTAINER in the pod
   securityContext:
     runAsUser: 1000
@@ -707,10 +706,7 @@ metrics:
   # seccompProfile:
   #   type: RuntimeDefault
 
-=======
-#
 prometheus:
->>>>>>> 6ed673a (feat(nextcloud): add notify_push support)
   ## Prometheus Operator ServiceMonitor configuration
   ## collects data from nextcloud metrics and notify_push if enabled
   serviceMonitor:
